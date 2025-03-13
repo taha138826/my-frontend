@@ -1,4 +1,4 @@
-const pb = new PocketBase("https://my-pocketbase-app-0fzr.onrender.com"); // بعداً عوض می‌شه
+const pb = new PocketBase("https://my-pocketbase-app-0fzr.onrender.com");
 const ADMIN_USER = "mtrb";
 const ADMIN_PASS = "Mtrb2688@2688";
 
@@ -108,7 +108,8 @@ async function showVideos() {
     if (videos.length) {
       player.src = pb.getFileUrl(videos[0], videos[0].videoUrl);
       document.getElementById("report").innerHTML = videos.map(v => `
-        <p style="cursor: pointer;" onclick="document.getElementById('videoPlayer').src='${pb.getFileUrl(v, v.videoUrl)}'">${v.title} (${v.category || "بدون دسته‌بندی"})
+        <p style="cursor: pointer;" onclick="document.getElementById('videoPlayer').src='${pb.getFileUrl(v, v.videoUrl)}'">
+          ${v.title} (${v.category || "بدون دسته‌بندی"})
         </p>
       ).join("");
     } else {
@@ -120,7 +121,7 @@ async function showVideos() {
 }
 
 function enterAdmin() {
-  const user = document.getElementById("adminUser").value.trim(); // نام کاربری جدید
+  const user = document.getElementById("adminUser").value.trim();
   const pass = document.getElementById("adminPass").value.trim();
   if (user === ADMIN_USER && pass === ADMIN_PASS) {
     document.getElementById("adminPanel").style.display = "block";
