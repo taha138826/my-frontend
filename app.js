@@ -1,6 +1,4 @@
 const pb = new PocketBase("https://my-pocketbase-app-0fzr.onrender.com");
-const ADMIN_USER = "mtrb";
-const ADMIN_PASS = "Mtrb2688@2688";
 
 async function signup() {
   const username = document.getElementById("username").value.trim();
@@ -26,19 +24,21 @@ async function signup() {
     document.getElementById("username").value = "";
     document.getElementById("password").value = "";
   } catch (e) {
-    alert("خطا: " + (e.message || "مشکلی پیش اومد"));
+    alert("خطا در ثبت‌نام: " + (e.message || "مشکلی پیش اومد"));
   }
 }
 
 async function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
+  console.log("Trying to login with:", username, password); // برای دیباگ
   if (!username || !password) {
     alert("لطفاً نام کاربری و رمز عبور رو پر کن!");
     return;
   }
   try {
-    await pb.collection("users").authWithPassword(username, password);
+    const authData = await pb.collection("users").authWithPassword(username, password);
+    console.log("Login successful:", authData); // برای دیباگ
     if (pb.authStore.model.isActive) {
       document.getElementById("login").style.display = "none";
       document.getElementById("main").style.display = "block";
@@ -48,9 +48,13 @@ async function login() {
       pb.authStore.clear();
     }
   } catch (e) {
-    alert("خطا: " + (e.message || "نام کاربری یا رمز عبور اشتباهه"));
+    alert("خطا در ورود: " + (e.message || "نام کاربری یا رمز عبور اشتباهه"));
   }
 }
+
+// توابع مدیریت (برای اینکه کامل باشه)
+const ADMIN_USER = "mtrb";
+const ADMIN_PASS = "Mtrb2688@2688";
 
 function enterAdmin() {
   const user = document.getElementById("adminUser").value.trim();
