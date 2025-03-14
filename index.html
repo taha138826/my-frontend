@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Cool App</title>
-  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="login">
@@ -16,14 +15,7 @@
   </div>
   <div id="main" style="display:none;">
     <h1>صفحه اصلی</h1>
-    <textarea id="text" placeholder="متنت رو بنویس" rows="4" cols="50" dir="rtl"></textarea><br>
-    <input id="hashtags" placeholder="هشتگ‌ها (با کاما جدا کن)" type="text" dir="rtl"><br>
-    <input id="fileInput" type="file" accept="image/*,video/*">
-    <button onclick="upload()">آپلود</button>
-    <button onclick="showReport()">نمایش گزارش</button>
-    <button onclick="showVideos()">نمایش ویدیوها</button>
-    <div id="report" dir="rtl"></div>
-    <video id="videoPlayer" controls width="400"></video>
+    <p>خوش اومدی!</p>
   </div>
   <div id="admin" style="display:none;">
     <h1>مدیریت</h1>
@@ -33,8 +25,6 @@
     <div id="adminPanel" style="display:none;">
       <input id="targetUser" placeholder="نام کاربری کاربر" type="text" dir="rtl">
       <button onclick="approveUser()">تأیید کاربر</button>
-      <input id="score" placeholder="امتیاز" type="number">
-      <button onclick="setScore()">ثبت امتیاز</button>
     </div>
   </div>
   <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>

@@ -29,6 +29,7 @@ async function signup() {
     alert("خطا: " + (e.message || "مشکلی پیش اومد"));
   }
 }
+
 async function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -51,47 +52,30 @@ async function login() {
   }
 }
 
-async function upload() {
-  const text = document.getElementById("text").value.trim();
-  const hashtags = document.getElementById("hashtags").value.split(",").map(h => h.trim()).filter(h => h);
-  const file = document.getElementById("fileInput").files[0];
-  if (!text && !file) {
-    alert("حداقل یه متن یا فایل رو وارد کن!");
-    return;
-  }
-  try {
-    const formData = new FormData();
-    if (file) formData.append("file", file);
-    const uploadedFile = await pb.collection("posts").create(formData);
-    await pb.collection("posts").update(uploadedFile.id, {
-      text: text,
-      hashtags: hashtags,
-      user: pb.authStore.model.id,
-      timestamp: new Date().toISOString(),
-    });
-    alert("آپلود با موفقیت انجام شد!");
-    document.getElementById("text").value = "";
-    document.getElementById("hashtags").value = "";
-    document.getElementById("fileInput").value = "";
-  } catch (e) {
-    alert("خطا: " + (e.message || "آپلود ناموفق بود"));
+function enterAdmin() {
+  const user = document.getElementById("adminUser").value.trim();
+  const pass = document.getElementById("adminPass").value.trim();
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("adminUser").value = "";
+    document.getElementById("adminPass").value = "";
+  } else {
+    alert("نام کاربری یا رمز ادمین اشتباهه!");
   }
 }
 
-async function setScore() {
+async function approveUser() {
   const username = document.getElementById("targetUser").value.trim();
-  const score = document.getElementById("score").value.trim();
-  if (!username || !score) {
-    alert("نام کاربری و امتیاز رو وارد کن!");
+  if (!username) {
+    alert("نام کاربری رو وارد کن!");
     return;
   }
   try {
     const user = await pb.collection("users").getFirstListItem(`username="${username}"`);
-    await pb.collection("users").update(user.id, { score: parseInt(score) });
-    alert(`امتیاز ${username} به ${score} تغییر کرد!`);
+    await pb.collection("users").update(user.id, { isActive: true });
+    alert(`کاربر ${username} با موفقیت تأیید شد!`);
     document.getElementById("targetUser").value = "";
-    document.getElementById("score").value = "";
   } catch (e) {
-    alert("خطا: " + (e.message || "ثبت امتیاز ناموفق بود"));
+    alert("خطا: " + (e.message || "کاربر پیدا نشد"));
   }
 }
