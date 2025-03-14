@@ -18,7 +18,7 @@ async function signup() {
       username: username,
       password: password,
       passwordConfirm: password,
-      email: ${username}@example.com,
+      email: `${username}@example.com`,
       isActive: false,
       score: 0,
     });
@@ -29,7 +29,6 @@ async function signup() {
     alert("خطا: " + (e.message || "مشکلی پیش اومد"));
   }
 }
-
 async function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -79,75 +78,6 @@ async function upload() {
   }
 }
 
-async function showReport() {
-  try {
-    const posts = await pb.collection("posts").getFullList({
-      filter: user = "${pb.authStore.model.id}",
-      sort: "-timestamp",
-    });
-    document.getElementById("report").innerHTML = posts.length ? posts.map(p => 
-      <div>
-        <p><strong>متن:</strong> ${p.text || "بدون متن"}</p>
-        <p><strong>هشتگ‌ها:</strong> ${p.hashtags.length ? p.hashtags.join(", ") : "بدون هشتگ"}</p>
-        ${p.file ? (p.file.match(/\.(mp4|webm|ogg)$/) ? 
-          <video src="${pb.getFileUrl(p, p.file)}" controls></video> : 
-          <img src="${pb.getFileUrl(p, p.file)}">) : ""}
-      </div>
-    ).join("") : "<p>هنوز پستی نداری!</p>";
-  } catch (e) {
-    alert("خطا: " + (e.message || "نمایش گزارش ناموفق بود"));
-  }
-}
-
-async function showVideos() {
-  try {
-    const videos = await pb.collection("admin_videos").getFullList({
-      sort: "title",
-    });
-    const player = document.getElementById("videoPlayer");
-    if (videos.length) {
-      player.src = pb.getFileUrl(videos[0], videos[0].videoUrl);
-      document.getElementById("report").innerHTML = videos.map(v => `
-        <p style="cursor: pointer;" onclick="document.getElementById('videoPlayer').src='${pb.getFileUrl(v, v.videoUrl)}'">
-          ${v.title} (${v.category || "بدون دسته‌بندی"})
-        </p>
-      ).join("");
-    } else {
-      document.getElementById("report").innerHTML = "<p>هنوز ویدیویی اضافه نشده!</p>";
-    }
-  } catch (e) {
-    alert("خطا: " + (e.message || "نمایش ویدیوها ناموفق بود"));
-  }
-}
-
-function enterAdmin() {
-  const user = document.getElementById("adminUser").value.trim();
-  const pass = document.getElementById("adminPass").value.trim();
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("adminUser").value = "";
-    document.getElementById("adminPass").value = "";
-  } else {
-    alert("نام کاربری یا رمز ادمین اشتباهه!");
-  }
-}
-
-async function approveUser() {
-  const username = document.getElementById("targetUser").value.trim();
-  if (!username) {
-    alert("نام کاربری رو وارد کن!");
-    return;
-  }
-  try {
-    const user = await pb.collection("users").getFirstListItem(username="${username}");
-    await pb.collection("users").update(user.id, { isActive: true });
-    alert(کاربر ${username} با موفقیت تأیید شد!);
-    document.getElementById("targetUser").value = "";
-  } catch (e) {
-    alert("خطا: " + (e.message || "کاربر پیدا نشد"));
-  }
-}
-
 async function setScore() {
   const username = document.getElementById("targetUser").value.trim();
   const score = document.getElementById("score").value.trim();
@@ -156,9 +86,9 @@ async function setScore() {
     return;
   }
   try {
-    const user = await pb.collection("users").getFirstListItem(username="${username}");
+    const user = await pb.collection("users").getFirstListItem(`username="${username}"`);
     await pb.collection("users").update(user.id, { score: parseInt(score) });
-    alert(امتیاز ${username} به ${score} تغییر کرد!`);
+    alert(`امتیاز ${username} به ${score} تغییر کرد!`);
     document.getElementById("targetUser").value = "";
     document.getElementById("score").value = "";
   } catch (e) {
